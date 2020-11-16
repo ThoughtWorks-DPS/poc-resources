@@ -10,7 +10,7 @@ jobs:
     executor: base-agent
     steps:
       - checkout
-      - run: echo "hello"
+      - run: bats test
 
 workflows:
   version: 2
