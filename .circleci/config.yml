@@ -1,0 +1,19 @@
+version: 2.1
+
+executors:
+  base-agent:
+    docker:
+      - image: twdps/di-circleci-infra-image:stable
+
+jobs:
+  validate-secret-patterns:
+    executor: base-agent
+    steps:
+      - checkout
+      - run: echo "hello"
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - validate-secret-patterns
