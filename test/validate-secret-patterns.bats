@@ -15,6 +15,11 @@ createBadFile() {
   run bash -c "$1 > bad.file"
 }
 
+scanAndAssertBadFile() {
+  createBadFile $1
+  scanAndAssertNotZero
+}
+
 @test "validate pem file matching" {
   run bash -c "touch bad.pem"
   run bash -c "echo BEGIN RSA PRIVATE KEY >> bad.pem"
@@ -24,177 +29,39 @@ createBadFile() {
   scanAndAssertNotZero
 }
 
-@test "validate AWS_ACCESS_KEY_ID prefix AKIA" {
-  createBadFile "AKIA123456789012"
-  scanAndAssertNotZero
-}
+@test "validate AWS_ACCESS_KEY_ID prefix AKIA" { scanAndAssertBadFile "AKIA123456789012"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AGPA" { scanAndAssertBadFile "AGPA123456789012"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AIDA" { scanAndAssertBadFile "AIDA123456789012"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AROA" { scanAndAssertBadFile "AROA123456789012"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AIPA" { scanAndAssertBadFile "AIPA123456789012"; }
+@test "validate AWS_ACCESS_KEY_ID prefix ANPA" { scanAndAssertBadFile "ANPA123456789012"; }
+@test "validate AWS_ACCESS_KEY_ID prefix ANVA" { scanAndAssertBadFile "ANVA123456789012"; }
+@test "validate AWS_ACCESS_KEY_ID prefix ASIA" { scanAndAssertBadFile "ASIA123456789012"; }
 
-@test "validate AWS_ACCESS_KEY_ID prefix AGPA" {
-  createBadFile "AGPA123456789012"
-  scanAndAssertNotZero
-}
-
-@test "validate AWS_ACCESS_KEY_ID prefix AIDA" {
-  createBadFile "AIDA123456789012"
-  scanAndAssertNotZero
-}
-
-@test "validate AWS_ACCESS_KEY_ID prefix AROA" {
-  createBadFile "AROA123456789012"
-  scanAndAssertNotZero
-}
-
-@test "validate AWS_ACCESS_KEY_ID prefix AIPA" {
-  createBadFile "AIPA123456789012"
-  scanAndAssertNotZero
-}
-
-@test "validate AWS_ACCESS_KEY_ID prefix ANPA" {
-  createBadFile "ANPA123456789012"
-  scanAndAssertNotZero
-}
-
-@test "validate AWS_ACCESS_KEY_ID prefix ANVA" {
-  createBadFile "ANVA123456789012"
-  scanAndAssertNotZero
-}
-
-@test "validate AWS_ACCESS_KEY_ID prefix ASIA" {
-  createBadFile "ASIA123456789012"
-  scanAndAssertNotZero
-}
-
-@test "validate AWS_ACCOUNT_ID pattern" {
-  createBadFile "AWS_ACCOUNT_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate AWS_ACCOUNT_id pattern" {
-  createBadFile "AWS_ACCOUNT_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate AWS_ACCOUNT_Id pattern" {
-  createBadFile "AWS_ACCOUNT_Id";
-  scanAndAssertNotZero;
-}
-
-@test "validate AWS_account_ID pattern" {
-  createBadFile "AWS_account_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate AWS_account_id pattern" {
-  createBadFile "AWS_account_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate AWS_account_Id pattern" {
-  createBadFile "AWS_account_Id";
-  scanAndAssertNotZero;
-}
-
-@test "validate AWS_Account_ID pattern" {
-  createBadFile "AWS_Account_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate AWS_Account_id pattern" {
-  createBadFile "AWS_Account_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate AWS_Account_Id pattern" {
-  createBadFile "AWS_Account_Id";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_ACCOUNT_ID pattern" {
-  createBadFile "aws_ACCOUNT_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_ACCOUNT_id pattern" {
-  createBadFile "aws_ACCOUNT_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_ACCOUNT_Id pattern" {
-  createBadFile "aws_ACCOUNT_Id";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_account_ID pattern" {
-  createBadFile "aws_account_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_account_id pattern" {
-  createBadFile "aws_account_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_account_Id pattern" {
-  createBadFile "aws_account_Id";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_Account_ID pattern" {
-  createBadFile "aws_Account_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_Account_id pattern" {
-  createBadFile "aws_Account_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate aws_Account_Id pattern" {
-  createBadFile "aws_Account_Id";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_ACCOUNT_ID pattern" {
-  createBadFile "Aws_ACCOUNT_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_ACCOUNT_id pattern" {
-  createBadFile "Aws_ACCOUNT_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_ACCOUNT_Id pattern" {
-  createBadFile "Aws_ACCOUNT_Id";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_account_ID pattern" {
-  createBadFile "Aws_account_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_account_id pattern" {
-  createBadFile "Aws_account_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_account_Id pattern" {
-  createBadFile "Aws_account_Id";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_Account_ID pattern" {
-  createBadFile "Aws_Account_ID";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_Account_id pattern" {
-  createBadFile "Aws_Account_id";
-  scanAndAssertNotZero;
-}
-
-@test "validate Aws_Account_Id pattern" {
-  createBadFile "Aws_Account_Id";
-  scanAndAssertNotZero;
-}
+@test "validate AWS_ACCOUNT_ID pattern" { scanAndAssertBadFile "AWS_ACCOUNT_ID"; }
+@test "validate AWS_ACCOUNT_id pattern" { scanAndAssertBadFile "AWS_ACCOUNT_id"; }
+@test "validate AWS_ACCOUNT_Id pattern" { scanAndAssertBadFile "AWS_ACCOUNT_Id"; }
+@test "validate AWS_account_ID pattern" { scanAndAssertBadFile "AWS_account_ID"; }
+@test "validate AWS_account_id pattern" { scanAndAssertBadFile "AWS_account_id"; }
+@test "validate AWS_account_Id pattern" { scanAndAssertBadFile "AWS_account_Id"; }
+@test "validate AWS_Account_ID pattern" { scanAndAssertBadFile "AWS_Account_ID"; }
+@test "validate AWS_Account_id pattern" { scanAndAssertBadFile "AWS_Account_id"; }
+@test "validate AWS_Account_Id pattern" { scanAndAssertBadFile "AWS_Account_Id"; }
+@test "validate aws_ACCOUNT_ID pattern" { scanAndAssertBadFile "aws_ACCOUNT_ID"; }
+@test "validate aws_ACCOUNT_id pattern" { scanAndAssertBadFile "aws_ACCOUNT_id"; }
+@test "validate aws_ACCOUNT_Id pattern" { scanAndAssertBadFile "aws_ACCOUNT_Id"; }
+@test "validate aws_account_ID pattern" { scanAndAssertBadFile "aws_account_ID"; }
+@test "validate aws_account_id pattern" { scanAndAssertBadFile "aws_account_id"; }
+@test "validate aws_account_Id pattern" { scanAndAssertBadFile "aws_account_Id"; }
+@test "validate aws_Account_ID pattern" { scanAndAssertBadFile "aws_Account_ID"; }
+@test "validate aws_Account_id pattern" { scanAndAssertBadFile "aws_Account_id"; }
+@test "validate aws_Account_Id pattern" { scanAndAssertBadFile "aws_Account_Id"; }
+@test "validate Aws_ACCOUNT_ID pattern" { scanAndAssertBadFile "Aws_ACCOUNT_ID"; }
+@test "validate Aws_ACCOUNT_id pattern" { scanAndAssertBadFile "Aws_ACCOUNT_id"; }
+@test "validate Aws_ACCOUNT_Id pattern" { scanAndAssertBadFile "Aws_ACCOUNT_Id"; }
+@test "validate Aws_account_ID pattern" { scanAndAssertBadFile "Aws_account_ID"; }
+@test "validate Aws_account_id pattern" { scanAndAssertBadFile "Aws_account_id"; }
+@test "validate Aws_account_Id pattern" { scanAndAssertBadFile "Aws_account_Id"; }
+@test "validate Aws_Account_ID pattern" { scanAndAssertBadFile "Aws_Account_ID"; }
+@test "validate Aws_Account_id pattern" { scanAndAssertBadFile "Aws_Account_id"; }
+@test "validate Aws_Account_Id pattern" { scanAndAssertBadFile "Aws_Account_Id"; }
