@@ -11,18 +11,14 @@ function teardown {
 }
 
 scanAndAssertNotZero() {
-  run bash -c "./git-secrets --scan"
+  run bash -c "./git-secrets --scan --untracked $1"
   [[ "${status}" -ne 0 ]]
 }
 
-createBadFile() {
-  run bash -c "touch bad.file"
-  run bash -c "$1 > bad.file"
-}
-
 scanAndAssertBadFile() {
-  createBadFile $1
-  scanAndAssertNotZero
+  run bash -c "touch bad.txt"
+  run bash -c "echo $1 > bad.txt"
+  scanAndAssertNotZero "bad.txt"
 }
 
 @test "validate pem file matching" {
@@ -31,7 +27,7 @@ scanAndAssertBadFile() {
   run bash -c "echo random text stuff thats encoded >> bad.pem"
   run bash -c "echo END RSA PRIVATE KEY >> bad.pem"
 
-  scanAndAssertNotZero
+  scanAndAssertNotZero "bad.pem"
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix AKIA" { scanAndAssertBadFile "AKIA123456789012"; }
