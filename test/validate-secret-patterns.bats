@@ -30,42 +30,14 @@ scanAndAssertBadFile() {
   scanAndAssertNotZero "bad.pem"
 }
 
-@test "validate AWS_ACCESS_KEY_ID prefix AKIA" { scanAndAssertBadFile "AKIA123456789012"; }
-@test "validate AWS_ACCESS_KEY_ID prefix AGPA" { scanAndAssertBadFile "AGPA123456789012"; }
-@test "validate AWS_ACCESS_KEY_ID prefix AIDA" { scanAndAssertBadFile "AIDA123456789012"; }
-@test "validate AWS_ACCESS_KEY_ID prefix AROA" { scanAndAssertBadFile "AROA123456789012"; }
-@test "validate AWS_ACCESS_KEY_ID prefix AIPA" { scanAndAssertBadFile "AIPA123456789012"; }
-@test "validate AWS_ACCESS_KEY_ID prefix ANPA" { scanAndAssertBadFile "ANPA123456789012"; }
-@test "validate AWS_ACCESS_KEY_ID prefix ANVA" { scanAndAssertBadFile "ANVA123456789012"; }
-@test "validate AWS_ACCESS_KEY_ID prefix ASIA" { scanAndAssertBadFile "ASIA123456789012"; }
-
-@test "validate AWS_ACCOUNT_ID pattern" { scanAndAssertBadFile "AWS_ACCOUNT_ID"; }
-@test "validate AWS_ACCOUNT_id pattern" { scanAndAssertBadFile "AWS_ACCOUNT_id"; }
-@test "validate AWS_ACCOUNT_Id pattern" { scanAndAssertBadFile "AWS_ACCOUNT_Id"; }
-@test "validate AWS_account_ID pattern" { scanAndAssertBadFile "AWS_account_ID"; }
-@test "validate AWS_account_id pattern" { scanAndAssertBadFile "AWS_account_id"; }
-@test "validate AWS_account_Id pattern" { scanAndAssertBadFile "AWS_account_Id"; }
-@test "validate AWS_Account_ID pattern" { scanAndAssertBadFile "AWS_Account_ID"; }
-@test "validate AWS_Account_id pattern" { scanAndAssertBadFile "AWS_Account_id"; }
-@test "validate AWS_Account_Id pattern" { scanAndAssertBadFile "AWS_Account_Id"; }
-@test "validate aws_ACCOUNT_ID pattern" { scanAndAssertBadFile "aws_ACCOUNT_ID"; }
-@test "validate aws_ACCOUNT_id pattern" { scanAndAssertBadFile "aws_ACCOUNT_id"; }
-@test "validate aws_ACCOUNT_Id pattern" { scanAndAssertBadFile "aws_ACCOUNT_Id"; }
-@test "validate aws_account_ID pattern" { scanAndAssertBadFile "aws_account_ID"; }
-@test "validate aws_account_id pattern" { scanAndAssertBadFile "aws_account_id"; }
-@test "validate aws_account_Id pattern" { scanAndAssertBadFile "aws_account_Id"; }
-@test "validate aws_Account_ID pattern" { scanAndAssertBadFile "aws_Account_ID"; }
-@test "validate aws_Account_id pattern" { scanAndAssertBadFile "aws_Account_id"; }
-@test "validate aws_Account_Id pattern" { scanAndAssertBadFile "aws_Account_Id"; }
-@test "validate Aws_ACCOUNT_ID pattern" { scanAndAssertBadFile "Aws_ACCOUNT_ID"; }
-@test "validate Aws_ACCOUNT_id pattern" { scanAndAssertBadFile "Aws_ACCOUNT_id"; }
-@test "validate Aws_ACCOUNT_Id pattern" { scanAndAssertBadFile "Aws_ACCOUNT_Id"; }
-@test "validate Aws_account_ID pattern" { scanAndAssertBadFile "Aws_account_ID"; }
-@test "validate Aws_account_id pattern" { scanAndAssertBadFile "Aws_account_id"; }
-@test "validate Aws_account_Id pattern" { scanAndAssertBadFile "Aws_account_Id"; }
-@test "validate Aws_Account_ID pattern" { scanAndAssertBadFile "Aws_Account_ID"; }
-@test "validate Aws_Account_id pattern" { scanAndAssertBadFile "Aws_Account_id"; }
-@test "validate Aws_Account_Id pattern" { scanAndAssertBadFile "Aws_Account_Id"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AKIA" { scanAndAssertBadFile "AKIA1234567890123456"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AGPA" { scanAndAssertBadFile "AGPA1234567890123456"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AIDA" { scanAndAssertBadFile "AIDA1234567890123456"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AROA" { scanAndAssertBadFile "AROA1234567890123456"; }
+@test "validate AWS_ACCESS_KEY_ID prefix AIPA" { scanAndAssertBadFile "AIPA1234567890123456"; }
+@test "validate AWS_ACCESS_KEY_ID prefix ANPA" { scanAndAssertBadFile "ANPA1234567890123456"; }
+@test "validate AWS_ACCESS_KEY_ID prefix ANVA" { scanAndAssertBadFile "ANVA1234567890123456"; }
+@test "validate AWS_ACCESS_KEY_ID prefix ASIA" { scanAndAssertBadFile "ASIA1234567890123456"; }
 
 @test "validate aws_secret_access_key" { scanAndAssertBadFile "aws_secret_access_key"; }
 @test "validate AWS_secret_access_key" { scanAndAssertBadFile "AWS_secret_access_key"; }
@@ -98,9 +70,5 @@ scanAndAssertBadFile() {
 
 @test "validate AWS_ACCOUNT_ID with numeric value of size 12 without spaces" { scanAndAssertBadFile "AWS_ACCOUNT_ID=012345678901"; }
 @test "validate AWS_ACCOUNT_ID with numeric value of size 12 with spaces" { scanAndAssertBadFile "AWS_ACCOUNT_ID = 012345678901"; }
-@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with =" { scanAndAssertBadFile "AWS_ACCOUNT_ID 012345678901"; }
-@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with empty" { scanAndAssertBadFile "AWS_ACCOUNT_ID 012345678901"; }
-@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with => " { scanAndAssertBadFile "AWS_ACCOUNT_ID=> 012345678901"; }
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with =" { scanAndAssertBadFile "AWS_ACCOUNT_ID = 012345678901"; }
 @test "validate AWS_ACCOUNT_ID with numeric value of size 12 with :" { scanAndAssertBadFile "AWS_ACCOUNT_ID :012345678901"; }
-@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with single quote" { scanAndAssertBadFile "AWS_ACCOUNT_ID='012345678901'"; }
-@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with double quote" { scanAndAssertBadFile "AWS_ACCOUNT_ID \"012345678901\""; }
