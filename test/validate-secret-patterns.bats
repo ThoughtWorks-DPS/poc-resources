@@ -5,6 +5,11 @@ function setup {
   run bash -c "chmod +x git-secrets"
   run bash -c "./git-secrets --add-provider -- cat git-secrets-pattern.txt"
 }
+
+function teardown {
+  run bash -c "rm git-secrets"
+}
+
 scanAndAssertNotZero() {
   run bash -c "./git-secrets --scan"
   [[ "${status}" -ne 0 ]]
