@@ -70,3 +70,32 @@ scanAndAssertBadFile() {
 @test "validate Aws_Account_ID pattern" { scanAndAssertBadFile "Aws_Account_ID"; }
 @test "validate Aws_Account_id pattern" { scanAndAssertBadFile "Aws_Account_id"; }
 @test "validate Aws_Account_Id pattern" { scanAndAssertBadFile "Aws_Account_Id"; }
+
+@test "validate aws_secret_access_key" { scanAndAssertBadFile "aws_secret_access_key"; }
+@test "validate AWS_secret_access_key" { scanAndAssertBadFile "AWS_secret_access_key"; }
+@test "validate aws_SECRET_access_key" { scanAndAssertBadFile "aws_SECRET_access_key"; }
+@test "validate aws_secret_ACCESS_key" { scanAndAssertBadFile "aws_secret_ACCESS_key"; }
+@test "validate aws_secret_access_KEY" { scanAndAssertBadFile "aws_secret_access_KEY"; }
+@test "validate AWS_SECRET_access_key" { scanAndAssertBadFile "AWS_SECRET_access_key"; }
+@test "validate AWS_secret_ACCESS_key" { scanAndAssertBadFile "AWS_secret_ACCESS_key"; }
+@test "validate AWS_secret_access_KEY" { scanAndAssertBadFile "AWS_secret_access_KEY"; }
+@test "validate aws_SECRET_ACCESS_key" { scanAndAssertBadFile "AWS_secret_access_KEY"; }
+@test "validate aws_secret_ACCESS_KEY" { scanAndAssertBadFile "AWS_secret_access_KEY"; }
+@test "validate aws_SECRET_access_KEY" { scanAndAssertBadFile "aws_SECRET_access_KEY"; }
+@test "validate AWS_SECRET_ACCESS_key" { scanAndAssertBadFile "AWS_SECRET_ACCESS_key"; }
+@test "validate AWS_SECRET_access_KEY" { scanAndAssertBadFile "AWS_SECRET_access_KEY"; }
+@test "validate AWS_secret_ACCESS_KEY" { scanAndAssertBadFile "AWS_secret_ACCESS_KEY"; }
+@test "validate aws_SECRET_ACCESS_KEY" { scanAndAssertBadFile "aws_SECRET_ACCESS_KEY"; }
+@test "validate AWS_SECRET_ACCESS_KEY" { scanAndAssertBadFile "AWS_SECRET_ACCESS_KEY"; }
+
+@test "validate kubeconfig token" {
+  run bash -c "touch bad.kubeconfig"
+  run bash -c "clusters: >> bad.kubeconfig"
+  run bash -c "- cluster: >> bad.kubeconfig"
+  run bash -c "contexts: >> bad.kubeconfig"
+  run bash -c "- context: >> bad.kubeconfig"
+  run bash -c "current_context: >> bad.kubeconfig"
+  run bash -c "users: >> bad.kubeconfig"
+  run bash -c "- name: >> bad.kubeconfig"
+  [[ "${status}" -ne 0 ]]
+}
