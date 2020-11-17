@@ -10,6 +10,11 @@ scanAndAssertNotZero() {
   [[ "${status}" -ne 0 ]]
 }
 
+createBadFile() {
+  run bash -c "touch bad.file"
+  run bash -c "$1 > bad.file"
+}
+
 @test "validate pem file matching" {
   run bash -c "touch bad.pem"
   run bash -c "echo BEGIN RSA PRIVATE KEY >> bad.pem"
@@ -20,58 +25,41 @@ scanAndAssertNotZero() {
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix AKIA" {
-  run bash -c "touch bad.credentials"
-  run bash -c "AKIA123456789012 >> bad.credentials"
-
+  createBadFile "AKIA123456789012"
   scanAndAssertNotZero
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix AGPA" {
-  run bash -c "touch bad.credentials"
-  run bash -c "AGPA123456789012 >> bad.credentials"
-
+  createBadFile "AGPA123456789012"
   scanAndAssertNotZero
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix AIDA" {
-  run bash -c "touch bad.credentials"
-  run bash -c "AIDA123456789012 >> bad.credentials"
-
+  createBadFile "AIDA123456789012"
   scanAndAssertNotZero
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix AROA" {
-    createBadFile "AROA123456789012"
-  run bash -c "touch bad.credentials"
-  run bash -c "AROA123456789012 >> bad.credentials"
-
+  createBadFile "AROA123456789012"
   scanAndAssertNotZero
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix AIPA" {
-  run bash -c "touch bad.credentials"
-  run bash -c "AIPA123456789012 >> bad.credentials"
-
+  createBadFile "AIPA123456789012"
   scanAndAssertNotZero
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix ANPA" {
-  run bash -c "touch bad.credentials"
-  run bash -c "ANPA123456789012 >> bad.credentials"
-
+  createBadFile "ANPA123456789012"
   scanAndAssertNotZero
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix ANVA" {
-  run bash -c "touch bad.credentials"
-  run bash -c "ANVA123456789012 >> bad.credentials"
-
+  createBadFile "ANVA123456789012"
   scanAndAssertNotZero
 }
 
 @test "validate AWS_ACCESS_KEY_ID prefix ASIA" {
-  run bash -c "touch bad.credentials"
-  run bash -c "ASIA123456789012 >> bad.credentials"
-
+  createBadFile "ASIA123456789012"
   scanAndAssertNotZero
 }
