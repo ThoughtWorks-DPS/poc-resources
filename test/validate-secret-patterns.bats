@@ -99,3 +99,12 @@ scanAndAssertBadFile() {
   run bash -c "- name: >> bad.kubeconfig"
   [[ "${status}" -ne 0 ]]
 }
+
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 without spaces" { scanAndAssertBadFile "AWS_ACCOUNT_ID=012345678901"; }
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with spaces" { scanAndAssertBadFile "AWS_ACCOUNT_ID = 012345678901"; }
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with =" { scanAndAssertBadFile "AWS_ACCOUNT_ID 012345678901"; }
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with empty" { scanAndAssertBadFile "AWS_ACCOUNT_ID 012345678901"; }
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with => " { scanAndAssertBadFile "AWS_ACCOUNT_ID=> 012345678901"; }
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with :" { scanAndAssertBadFile "AWS_ACCOUNT_ID :012345678901"; }
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with single quote" { scanAndAssertBadFile "AWS_ACCOUNT_ID='012345678901'"; }
+@test "validate AWS_ACCOUNT_ID with numeric value of size 12 with double quote" { scanAndAssertBadFile "AWS_ACCOUNT_ID \"012345678901\""; }
