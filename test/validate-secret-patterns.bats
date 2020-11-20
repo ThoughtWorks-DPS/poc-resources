@@ -3,6 +3,8 @@
 function setup {
   run bash -c "curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets"
   run bash -c "chmod +x git-secrets"
+  run bash -c "git config --global --unset secrets.patterns"
+  run bash -c "./git-secrets --add-provider -- cat git-secrets-pattern.txt"
   }
 
 function teardown {
@@ -20,9 +22,6 @@ createBadFile() {
 }
 
 scanAndAssertBadFile() {
-  run bash -c "git config --global --unset secrets.patterns"
-  run bash -c "./git-secrets --add-provider -- cat git-secrets-pattern.txt"
-
   createBadFile $1
   scanAndAssertNotZero
 }
