@@ -100,6 +100,6 @@ scanAndAssertBadFile() {
 @test "validate aws_secret_access_key value setter | :" { scanAndAssertBadFile "aws_secret_access_key : fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 @test "validate aws_secret_access_key value setter | =>" { scanAndAssertBadFile "aws_secret_access_key => fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 
-@test "validate client-key-data kubeconfig token" { scanAndAssertBadFile "client-certificate-data:"; }
-@test "validate client-key-data kubeconfig token" { scanAndAssertBadFile "certificate-authority-data:"; }
+@test "validate client-certificate-data kubeconfig token" { scanAndAssertBadFile "client-certificate-data:"; }
+@test "validate certificate-authority-data kubeconfig token" { scanAndAssertBadFile "certificate-authority-data:"; }
 @test "validate client-key-data kubeconfig token" { scanAndAssertBadFile "client-key-data:"; }
