@@ -1,3 +1,5 @@
 fileignoreconfig:
+- filename: git-secrets-pattern.txt
+  checksum: fb7fd97d246edf0d7fd174979a937bc0a5eacb69c6580a1f1e64ca2bd9dcec7a
 - filename: test/validate-secret-patterns.bats
-  checksum: 2dfab98d340c9638d2e0cf8a938f37fabd0f29b0945b8a5b6b33cac7d934ac31
+  checksum: ba996fbdbb7657990cf4d95a374dbaa22248945fe31cffbacbcff4a17ea8554f
