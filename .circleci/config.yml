@@ -7,16 +7,10 @@ executors:
 
 jobs:
   validate-secret-patterns:
-    macos:
-      xcode: 12.1.0
+    executor: base-agent
     steps:
       - checkout
-      - run: |
-          git clone https://github.com/sstephenson/bats.git
-          cd bats
-          sudo ./install.sh /usr/local
-          cd -
-          bats test
+      - run: bats test
 
   scan-repos-for-secrets:
     executor: base-agent
