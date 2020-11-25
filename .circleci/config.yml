@@ -12,8 +12,20 @@ jobs:
       - checkout
       - run: bats test
 
+  check-repos-for-secrets:
+    executor: base-agent
+    steps:
+      - run: echo hello
+
 workflows:
   version: 2
   main:
     jobs:
       - validate-secret-patterns
+
+  scan-secrets:
+    jobs:
+      - check-repos-for-secrets
+#    triggers:
+#      - schedule:
+#          cron: "0 1 * * *"
