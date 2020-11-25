@@ -111,11 +111,11 @@ scanAndAssertBadFile() {
 #Currently our patterns do not allow whitespaces
 #and will not fail on GNU(linux distros) but will fail on BSD(macOS)
 
-#@test "validate aws_secret_access_key value without setter" { scanAndAssertBadFile "aws_secret_access_key fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
-#@test "validate aws_secret_access_key value setter | :" { scanAndAssertBadFile "aws_secret_access_key : fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
-#@test "validate aws_secret_access_key value setter | =>" { scanAndAssertBadFile "aws_secret_access_key => fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
-#@test "validate aws_secret_access_key value setter | anything" { scanAndAssertBadFile "aws_secret_access_key > fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
-#@test "validate AWS_secret_ACCESS_KEY with space after key" { scanAndAssertBadFile "AWS_secret_ACCESS_KEY =fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+@test "validate aws_secret_access_key value without setter" { scanAndAssertBadFile "aws_secret_access_key fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+@test "validate aws_secret_access_key value setter | :" { scanAndAssertBadFile "aws_secret_access_key : fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+@test "validate aws_secret_access_key value setter | =>" { scanAndAssertBadFile "aws_secret_access_key => fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+@test "validate aws_secret_access_key value setter | anything" { scanAndAssertBadFile "aws_secret_access_key > fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+@test "validate AWS_secret_ACCESS_KEY with space after key" { scanAndAssertBadFile "AWS_secret_ACCESS_KEY =fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 
 @test "validate client-certificate-data kubeconfig token" { scanAndAssertBadFile "client-certificate-data:"; }
 @test "validate certificate-authority-data kubeconfig token" { scanAndAssertBadFile "certificate-authority-data:"; }
