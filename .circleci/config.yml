@@ -15,6 +15,7 @@ jobs:
   scan-repos-for-secrets:
     executor: base-agent
     steps:
+      - checkout
       - run: ./scan_repo_for_secrets.sh
 
 workflows:
