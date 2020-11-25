@@ -5,7 +5,7 @@ function setup {
   run bash -c "chmod +x git-secrets"
   run bash -c "git config --global --unset secrets.patterns"
   run bash -c "./git-secrets --add-provider -- cat git-secrets-pattern.txt"
-  }
+}
 
 function teardown {
   run bash -c "rm git-secrets"
@@ -14,6 +14,16 @@ function teardown {
 scanAndAssertNotZero() {
   run bash -c "./git-secrets --scan --untracked bad.file"
   [[ "${status}" -ne 0 ]]
+}
+
+scanAndAssertZero(){
+  run bash -c "./git-secrets --scan --untracked bad.file"
+  [[ "${status}" = 0 ]]
+}
+
+scanAndAssertZeroBadFile() {
+    createBadFile $1
+    scanAndAssertZero
 }
 
 createBadFile() {
@@ -26,7 +36,6 @@ scanAndAssertBadFile() {
   scanAndAssertNotZero
 }
 
-@test "validate password matching" { scanAndAssertBadFile "password=****"; }
 @test "validate pem file matching" {
   run bash -c "touch bad.pem"
   run bash -c "echo BEGIN RSA PRIVATE KEY >> bad.pem"
@@ -35,6 +44,8 @@ scanAndAssertBadFile() {
   run bash -c "./git-secrets --scan --untracked bad.pem"
   [[ "${status}" -ne 0 ]]
 }
+
+@test "validate password matching" { scanAndAssertBadFile "password=****"; }
 
 @test "validate ssh-key matching" { scanAndAssertBadFile "^ssh-rsa"; }
 
@@ -91,14 +102,27 @@ scanAndAssertBadFile() {
 @test "validate AWS_secret_ACCESS_KEY with value" { scanAndAssertBadFile "AWS_secret_ACCESS_KEY=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 @test "validate aws_SECRET_ACCESS_KEY with value" { scanAndAssertBadFile "aws_SECRET_ACCESS_KEY=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 @test "validate AWS_SECRET_ACCESS_KEY with value" { scanAndAssertBadFile "AWS_SECRET_ACCESS_KEY=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+
 @test "validate KEY with value" { scanAndAssertBadFile "KEY=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 @test "validate Key with value" { scanAndAssertBadFile "Key=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 @test "validate key with value" { scanAndAssertBadFile "key=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 
-# @test "validate aws_secret_access_key value without setter" { scanAndAssertBadFile "aws_secret_access_key fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
-# @test "validate aws_secret_access_key value setter | :" { scanAndAssertBadFile "aws_secret_access_key : fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
-# @test "validate aws_secret_access_key value setter | =>" { scanAndAssertBadFile "aws_secret_access_key => fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+#There is another story to make these tests pass.
+#Currently our patterns do not allow whitespaces
+#and will not fail on GNU(linux distros) but will fail on BSD(macOS)
+
+#@test "validate aws_secret_access_key value without setter" { scanAndAssertBadFile "aws_secret_access_key fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+#@test "validate aws_secret_access_key value setter | :" { scanAndAssertBadFile "aws_secret_access_key : fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+#@test "validate aws_secret_access_key value setter | =>" { scanAndAssertBadFile "aws_secret_access_key => fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+#@test "validate aws_secret_access_key value setter | anything" { scanAndAssertBadFile "aws_secret_access_key > fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+#@test "validate AWS_secret_ACCESS_KEY with space after key" { scanAndAssertBadFile "AWS_secret_ACCESS_KEY =fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 
 @test "validate client-certificate-data kubeconfig token" { scanAndAssertBadFile "client-certificate-data:"; }
 @test "validate certificate-authority-data kubeconfig token" { scanAndAssertBadFile "certificate-authority-data:"; }
 @test "validate client-key-data kubeconfig token" { scanAndAssertBadFile "client-key-data:"; }
+
+#sanity checks because we're only catching for non 0 exit status. git secrets can throw Invalid preceding regular expression which would make all the
+#test pass since it is throwing an error.
+@test "validate regular strings will not get caught" { scanAndAssertZeroBadFile "abcedfg"; }
+@test "validate strings with 40 characters will not get caught" { scanAndAssertZeroBadFile "1234567890abcdefghijklmnopqrstuvwxyzaaaa"; }
+@test "validate strings with only access key will not get caught" { scanAndAssertZeroBadFile "fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
