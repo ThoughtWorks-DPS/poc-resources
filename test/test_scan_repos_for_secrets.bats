@@ -4,7 +4,7 @@
 #function teardown { }
 
 @test "validate echo statement" {
-  run bash -c "./scan_repo_for_secrets.sh"
+  run bash -c "./scan_repos_for_secrets.sh"
 
   [[ "${output}" =~ "scanning repository" ]]
 }

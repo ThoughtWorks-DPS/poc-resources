@@ -16,7 +16,7 @@ jobs:
     executor: base-agent
     steps:
       - checkout
-      - run: ./scan_repo_for_secrets.sh
+      - run: ./scan_repos_for_secrets.sh
 
 workflows:
   version: 2
@@ -24,7 +24,7 @@ workflows:
     jobs:
       - validate-secret-patterns
 
-  scan-secrets:
+  scan-repos-for-secrets:
     jobs:
       - scan-repos-for-secrets
 #    triggers:
