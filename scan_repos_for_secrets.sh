@@ -21,4 +21,11 @@ echo "Scanning secrets for repository: $1"
 echo "------------------------"
 fetchRepository $1
 scanRepository $1
-echo "Exit Code: $?"
+exitCode=$?
+if [ $exitCode -ne 0 ]; then
+  echo "Secrets found in $1! Sound the alarm!"
+else
+  echo "No secrets found in $1. Nothing to see here."
+fi
+
+
