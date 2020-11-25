@@ -11,7 +11,12 @@ jobs:
       xcode: 12.1.0
     steps:
       - checkout
-      - run: bats test
+      - run: |
+          git clone https://github.com/sstephenson/bats.git
+          cd bats
+          sudo ./install.sh /usr/local
+          cd -
+          bats test
 
   scan-repos-for-secrets:
     executor: base-agent
