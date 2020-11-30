@@ -4,14 +4,14 @@ NUM_FAILED=0
 ROOT_PATH=$(pwd)
 
 setupGitSecrets() {
-  curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets
+  curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >>git-secrets
   chmod +x git-secrets
   git config --global --unset secrets.patterns
 }
 
-scanRepository() {
+scanRecursively() {
   cd $1
-  ./../git-secrets --add-provider -- cat ../git-secrets-pattern.txt > /dev/null
+  ./../git-secrets --add-provider -- cat ../git-secrets-pattern.txt >/dev/null
   ./../git-secrets --scan --recursive
 }
 
@@ -28,18 +28,23 @@ checkScanOutput() {
   fi
 }
 
-fetchAndScanRepository() {
+scanRepository() {
   echo "Scanning for secrets in repository: $1"
   echo "======================================"
   fetchRepository $1
-  scanRepository $1
+  scanRecursively $1
   checkScanOutput $? $1
 }
 
+scanRepositories() {
+  for repo in "$@"; do
+    cd $ROOT_PATH
+    scanRepository $repo
+    cd $ROOT_PATH
+  done
+}
+
 setupGitSecrets
-for repo in "$@"; do
-  fetchAndScanRepository $repo
-  cd $ROOT_PATH
-done
+scanRepositories "$@"
 
 exit $NUM_FAILED

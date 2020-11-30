@@ -3,3 +3,5 @@ fileignoreconfig:
   checksum: fb7fd97d246edf0d7fd174979a937bc0a5eacb69c6580a1f1e64ca2bd9dcec7a
 - filename: test/validate-secret-patterns.bats
   checksum: 470057b258a91c284928f1831f9d8a89d1e58d26820662645e60f39a8b8d560c
+- filename: scan_repos_for_secrets.sh
+  checksum: 7be887196e71f9ba06cf781f075136b79d3a0ffa588d892cf43b87c768c15d77
