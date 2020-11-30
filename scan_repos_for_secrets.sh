@@ -10,22 +10,31 @@ scanRepository() {
   cd $1
   ./../git-secrets --add-provider -- cat ../git-secrets-pattern.txt > /dev/null
   ./../git-secrets --scan --recursive
+  cd ..
 }
 
 fetchRepository() {
-  git clone git@github.com:ThoughtWorks-DPS/$1.git $1
+  git clone -q git@github.com:ThoughtWorks-DPS/$1.git $1
+}
+
+checkScanOutput() {
+  if [ $1 -ne 0 ]; then
+    echo "Secrets found! Sound the alarm!"
+  else
+    echo "No secrets found. Nothing to see here."
+  fi
+}
+
+fetchAndScanRepository() {
+  echo "Scanning repository: $1 for secrets"
+  echo "======================================"
+  fetchRepository $1
+  scanRepository $1
+  checkScanOutput $?
 }
 
 installGitSecrets
-echo "Scanning secrets for repository: $1"
-echo "------------------------"
-fetchRepository $1
-scanRepository $1
-exitCode=$?
-if [ $exitCode -ne 0 ]; then
-  echo "Secrets found in $1! Sound the alarm!"
-else
-  echo "No secrets found in $1. Nothing to see here."
-fi
+fetchAndScanRepository $1
+
 
 
