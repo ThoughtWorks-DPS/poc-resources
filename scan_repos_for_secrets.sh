@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+NUM_FAILED=0
+ROOT_PATH=$(pwd)
+
 installGitSecrets() {
   curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets
   chmod +x git-secrets
@@ -19,7 +22,7 @@ fetchRepository() {
 checkScanOutput() {
   if [ $1 -ne 0 ]; then
     echo "Secrets found in $2! Sound the alarm!"
-    FAILED=1
+    NUM_FAILED=1
   else
     echo "No secrets found in $2. Nothing to see here."
   fi
@@ -34,13 +37,10 @@ fetchAndScanRepository() {
 }
 
 installGitSecrets
-rootPathOfScript=$(pwd)
-FAILED=0
-
 for repo in "$@"
 do
   fetchAndScanRepository $repo
-  cd $rootPathOfScript
+  cd $ROOT_PATH
 done
 
-exit $FAILED
+exit $NUM_FAILED
