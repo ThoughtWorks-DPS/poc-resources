@@ -16,7 +16,7 @@ jobs:
     executor: base-agent
     steps:
       - checkout
-      - run: ./scan_repos_for_secrets.sh poc-va-api
+      - run: ./scan_repos_for_secrets.sh poc-va-api poc-va-cli poc-platform-eks poc-platform-servicemesh poc-platform-vpc poc-iam-profiles
 
 workflows:
   version: 2
