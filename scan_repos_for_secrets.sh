@@ -2,6 +2,7 @@
 
 NUM_FAILED=0
 ROOT_PATH=$(pwd)
+GITHUB_TOKEN=$(secrethub read vapoc/platform/svc/github/access-token)
 
 setupGitSecrets() {
   curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >>git-secrets
@@ -16,7 +17,7 @@ scanRecursively() {
 }
 
 fetchRepository() {
-  git clone -q git@github.com:ThoughtWorks-DPS/$1.git $1
+  git clone -q https://$GITHUB_TOKEN@github.com/ThoughtWorks-DPS/$1 $1
 }
 
 checkScanOutput() {

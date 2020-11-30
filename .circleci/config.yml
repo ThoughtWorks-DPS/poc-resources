@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  secrethub: secrethub/cli@1.0.0
+
 executors:
   base-agent:
     docker:
@@ -16,7 +19,10 @@ jobs:
     executor: base-agent
     steps:
       - checkout
-      - run: ./scan_repos_for_secrets.sh poc-va-api poc-va-cli poc-platform-eks poc-platform-servicemesh poc-platform-vpc poc-iam-profiles
+      - run:
+          name: scan-repos
+          shell: secrethub run -- /bin/sh -eo pipefail
+          command: ./scan_repos_for_secrets.sh poc-va-api poc-va-cli poc-platform-eks poc-platform-servicemesh poc-platform-vpc poc-iam-profiles poc-va-dev-portal-backstage poc-va-starter-service poc-va-starter-java
 
 workflows:
   version: 2
