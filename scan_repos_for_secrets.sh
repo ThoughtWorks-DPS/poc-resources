@@ -19,6 +19,7 @@ fetchRepository() {
 checkScanOutput() {
   if [ $1 -ne 0 ]; then
     echo "Secrets found in $2! Sound the alarm!"
+    FAILED=1
   else
     echo "No secrets found in $2. Nothing to see here."
   fi
@@ -34,6 +35,7 @@ fetchAndScanRepository() {
 
 installGitSecrets
 rootPathOfScript=$(pwd)
+FAILED=0
 
 for repo in "$@"
 do
@@ -41,5 +43,4 @@ do
   cd $rootPathOfScript
 done
 
-
-
+exit $FAILED

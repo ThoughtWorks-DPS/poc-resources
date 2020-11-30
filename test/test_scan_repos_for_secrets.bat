@@ -45,6 +45,7 @@ function teardown() {
   run bash -c "./scan_repos_for_secrets.sh poc-resources"
 
   [[ ${output} =~ "Secrets found in poc-resources! Sound the alarm!" ]]
+  [[ ${status} -eq 1 ]]
 }
 
 @test "scans multiple repos based on input" {
