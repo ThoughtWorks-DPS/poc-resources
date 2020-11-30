@@ -56,3 +56,12 @@ function teardown() {
   [ "${lines[5]}" = "No secrets found in poc-va-cli. Nothing to see here." ]
   [ "${lines[8]}" = "No secrets found in poc-platform-servicemesh. Nothing to see here." ]
 }
+
+@test "fail when one out of several repos reports a secret" {
+  run bash -c "./scan_repos_for_secrets.sh poc-va-api poc-va-cli poc-resources"
+
+  [[ "${output}" =~ "No secrets found in poc-va-api. Nothing to see here." ]]
+  [[ "${output}" =~ "No secrets found in poc-va-cli. Nothing to see here." ]]
+  [[ "${output}" =~ "Secrets found in poc-resources! Sound the alarm!" ]]
+  [[ ${status} -eq 1 ]]
+}
