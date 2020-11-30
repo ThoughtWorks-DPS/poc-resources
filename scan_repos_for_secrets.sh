@@ -10,7 +10,6 @@ scanRepository() {
   cd $1
   ./../git-secrets --add-provider -- cat ../git-secrets-pattern.txt > /dev/null
   ./../git-secrets --scan --recursive
-  cd ..
 }
 
 fetchRepository() {
@@ -19,7 +18,7 @@ fetchRepository() {
 
 checkScanOutput() {
   if [ $1 -ne 0 ]; then
-    echo "Secrets found! Sound the alarm!"
+    echo "Secrets found in $2! Sound the alarm!"
   else
     echo "No secrets found in $2. Nothing to see here."
   fi
@@ -34,10 +33,12 @@ fetchAndScanRepository() {
 }
 
 installGitSecrets
+rootPathOfScript=$(pwd)
 
 for repo in "$@"
 do
   fetchAndScanRepository $repo
+  cd $rootPathOfScript
 done
 
 

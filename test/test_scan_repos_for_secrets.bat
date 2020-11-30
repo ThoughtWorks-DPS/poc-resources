@@ -41,6 +41,12 @@ function teardown() {
   [[ ${output} =~ "No secrets found in poc-va-api. Nothing to see here." ]]
 }
 
+@test "scans and finds secrets" {
+  run bash -c "./scan_repos_for_secrets.sh poc-resources"
+
+  [[ ${output} =~ "Secrets found in poc-resources! Sound the alarm!" ]]
+}
+
 @test "scans multiple repos based on input" {
   run bash -c "./scan_repos_for_secrets.sh poc-va-api poc-va-cli poc-platform-servicemesh"
 
