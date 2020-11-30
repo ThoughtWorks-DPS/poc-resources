@@ -65,3 +65,9 @@ function teardown() {
   [[ "${output}" =~ "Secrets found in poc-resources! Sound the alarm!" ]]
   [[ ${status} -eq 1 ]]
 }
+
+@test "exit code contains total failed repositories" {
+  run bash -c "./scan_repos_for_secrets.sh poc-resources poc-resources"
+
+  [[ ${status} -eq 2 ]]
+}
