@@ -21,20 +21,24 @@ checkScanOutput() {
   if [ $1 -ne 0 ]; then
     echo "Secrets found! Sound the alarm!"
   else
-    echo "No secrets found. Nothing to see here."
+    echo "No secrets found in $2. Nothing to see here."
   fi
 }
 
 fetchAndScanRepository() {
-  echo "Scanning repository: $1 for secrets"
+  echo "Scanning for secrets in repository: $1"
   echo "======================================"
   fetchRepository $1
   scanRepository $1
-  checkScanOutput $?
+  checkScanOutput $? $1
 }
 
 installGitSecrets
-fetchAndScanRepository $1
+
+for repo in "$@"
+do
+  fetchAndScanRepository $repo
+done
 
 
 
