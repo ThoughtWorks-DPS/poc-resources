@@ -29,11 +29,12 @@ checkScanOutput() {
 }
 
 scanRepository() {
-  echo "Scanning for secrets in repository: $1"
   echo "======================================"
+  echo "Scanning for secrets in repository: $1"
   fetchRepository $1
   scanRecursively $1
   checkScanOutput $? $1
+  echo "======================================"
 }
 
 scanRepositories() {
