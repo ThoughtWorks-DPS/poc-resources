@@ -3,7 +3,7 @@
 NUM_FAILED=0
 ROOT_PATH=$(pwd)
 
-installGitSecrets() {
+setupGitSecrets() {
   curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets
   chmod +x git-secrets
   git config --global --unset secrets.patterns
@@ -36,9 +36,8 @@ fetchAndScanRepository() {
   checkScanOutput $? $1
 }
 
-installGitSecrets
-for repo in "$@"
-do
+setupGitSecrets
+for repo in "$@"; do
   fetchAndScanRepository $repo
   cd $ROOT_PATH
 done
