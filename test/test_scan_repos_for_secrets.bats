@@ -41,13 +41,6 @@ function teardown() {
   [[ ${output} =~ "No secrets found in poc-va-api. Nothing to see here." ]]
 }
 
-@test "fails when secrets are found" {
-  run bash -c "./scan_repos_for_secrets.sh poc-resources"
-
-  [[ ${output} =~ "Secrets found in poc-resources! Sound the alarm!" ]]
-  [[ ${status} -eq 1 ]]
-}
-
 @test "passes when no secrets are found on multiple repositories" {
   run bash -c "./scan_repos_for_secrets.sh poc-va-api poc-va-cli poc-platform-servicemesh"
 
@@ -57,16 +50,30 @@ function teardown() {
   [[ "${output}" =~ "No secrets found in poc-platform-servicemesh. Nothing to see here." ]]
 }
 
+makeFakeRepo() {
+  run bash -c "mkdir $1; cd $1; git init; echo aws_secret_access_key=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf > fakeKey.txt; git add fakeKey.txt; cd .."
+}
+
+@test "fails when secrets are found" {
+  makeFakeRepo fake-repo
+  run bash -c "./scan_repos_for_secrets.sh fake-repo"
+
+  [[ ${output} =~ "Secrets found in fake-repo! Sound the alarm!" ]]
+  [[ ${status} -eq 1 ]]
+}
+
 @test "fail when one out of multiple repos reports a secret" {
-  run bash -c "./scan_repos_for_secrets.sh poc-va-api poc-va-cli poc-resources"
+  makeFakeRepo fake-repo
+  run bash -c "./scan_repos_for_secrets.sh poc-va-api poc-va-cli fake-repo"
 
   [[ "${output}" =~ "No secrets found in poc-va-api. Nothing to see here." ]]
   [[ "${output}" =~ "No secrets found in poc-va-cli. Nothing to see here." ]]
-  [[ "${output}" =~ "Secrets found in poc-resources! Sound the alarm!" ]]
+  [[ "${output}" =~ "Secrets found in fake-repo! Sound the alarm!" ]]
   [[ ${status} -eq 1 ]]
 }
 
 @test "exit code contains total failed repositories" {
+  makeFakeRepo fake-repo
   run bash -c "./scan_repos_for_secrets.sh poc-resources poc-resources"
 
   [[ ${status} -eq 2 ]]
