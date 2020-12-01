@@ -7,3 +7,5 @@ fileignoreconfig:
   checksum: 7be887196e71f9ba06cf781f075136b79d3a0ffa588d892cf43b87c768c15d77
 - filename: .circleci/config.yml
   checksum: 57c8afe19c98aaaeb176cd8c6ccbddc328e99c595d4969d8e81c369176cb650c
+- filename: git-secrets-pattern.txt
+  checksum: 66c44cc134ddfe91de641d213c3de2529104919e926b2f947b730f790c747373
