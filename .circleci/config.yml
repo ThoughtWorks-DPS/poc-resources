@@ -34,6 +34,6 @@ workflows:
     jobs:
       - scan-repos-for-secrets:
           context: dps-va-di
-#    triggers:
-#      - schedule:
-#          cron: "0 1 * * *"
+    triggers:
+      - schedule:
+          cron: "0 5 * * *"
