@@ -36,4 +36,4 @@ workflows:
           context: dps-va-di
     triggers:
       - schedule:
-          cron: "0 5 * * *"
+          cron: "0 10 * * *"
