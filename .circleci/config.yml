@@ -22,7 +22,7 @@ jobs:
       - run:
           name: scan-repos
           shell: secrethub run -- /bin/sh -eo pipefail
-          command: ./scan_repos_for_secrets.sh poc-va-api poc-va-cli poc-platform-eks poc-platform-servicemesh poc-platform-vpc poc-iam-profiles poc-va-dev-portal-backstage poc-va-starter-service poc-va-starter-java
+          command: ./scan_repos_for_secrets.sh di-circleci-infra-image eks-di-poc-va git-tag-orb poc-api-styleguide poc-documentation poc-iam-profiles poc-platform-eks poc-platform-servicemesh poc-platform-vpc poc-resources poc-va-api poc-va-cli poc-va-dev-portal-apigee poc-va-dev-portal-backstage
 
 workflows:
   version: 2
