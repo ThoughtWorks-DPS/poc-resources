@@ -49,6 +49,8 @@ scanAndAssertBadFile() {
 
 @test "validate ssh-key matching" { scanAndAssertBadFile "^ssh-rsa"; }
 
+@test "validate --docker-password=$GITHUB_TOKEN is allowed" { scanAndAssertZeroBadFile "--docker-password=$GITHUB_TOKEN"; }
+
 @test "validate AWS_ACCESS_KEY_ID prefix AKIA" { scanAndAssertBadFile "AKIA1234567890123456"; }
 @test "validate AWS_ACCESS_KEY_ID prefix AGPA" { scanAndAssertBadFile "AGPA1234567890123456"; }
 @test "validate AWS_ACCESS_KEY_ID prefix AIDA" { scanAndAssertBadFile "AIDA1234567890123456"; }

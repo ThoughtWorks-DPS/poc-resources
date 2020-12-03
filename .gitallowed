@@ -1,2 +1,3 @@
 test/
 git-secrets-pattern.txt
+--docker-password=$GITHUB_TOKEN
