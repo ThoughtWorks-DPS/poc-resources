@@ -5,10 +5,15 @@
 ### Custom Patterns for Git Secret
 Custom patterns that we use to scan repositories are found here: [git-secrets-pattern.txt](./git-secrets-pattern.txt)
 
+#### False positives
+False positives patterns can be added to a `.gitallowed` file in the root of the repository that fails the scan.
+See more [here](https://github.com/awslabs/git-secrets#ignoring-false-positives)  
+
 ### Daily Repository Scan
 Daily scans of a set of repositories runs at 10:00 am UTC. 
 
 The specified repositories we scan are in the [circleci configuration file](./.circleci/config.yml).
+Additional repositories can be added by updating the list in the linked configuration file. 
 
 #### Script
 ##### Usage
