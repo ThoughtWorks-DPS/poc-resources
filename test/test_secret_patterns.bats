@@ -1,14 +1,14 @@
 #!/usr/bin/env bats
 
-function setup {
+setup_file() {
   run bash -c "curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets"
   run bash -c "chmod +x git-secrets"
   run bash -c "git config --global --unset secrets.patterns"
   run bash -c "./git-secrets --add-provider -- cat git-secrets-pattern.txt"
 }
 
-function teardown {
-  run bash -c "rm git-secrets"
+teardown_file() {
+  run bash -c "rm git-secrets bad.file bad.pem"
 }
 
 scanAndAssertNotZero() {
@@ -49,7 +49,8 @@ scanAndAssertBadFile() {
 
 @test "validate ssh-key matching" { scanAndAssertBadFile "^ssh-rsa"; }
 
-@test "validate --docker-password=$GITHUB_TOKEN is allowed" { scanAndAssertZeroBadFile "--docker-password=$GITHUB_TOKEN"; }
+@test "validate --docker-password=\$GITHUB_TOKEN is allowed" { scanAndAssertZeroBadFile '--docker-password=\$GITHUB_TOKEN'; }
+@test "validate --docker-password=*\$afd34 is not allowed" { scanAndAssertBadFile '--docker-password=*\$afd34'; }
 
 @test "validate AWS_ACCESS_KEY_ID prefix AKIA" { scanAndAssertBadFile "AKIA1234567890123456"; }
 @test "validate AWS_ACCESS_KEY_ID prefix AGPA" { scanAndAssertBadFile "AGPA1234567890123456"; }
