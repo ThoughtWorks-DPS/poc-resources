@@ -1,23 +1,25 @@
 #!/usr/bin/env bats
 
-setup_file() {
+function setup {
   run bash -c "curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets"
   run bash -c "chmod +x git-secrets"
   run bash -c "git config --global --unset secrets.patterns"
   run bash -c "./git-secrets --add-provider -- cat git-secrets-pattern.txt"
 }
 
-teardown_file() {
-  run bash -c "rm git-secrets bad.file bad.pem"
+function teardown {
+  run bash -c "rm git-secrets"
 }
 
 scanAndAssertNotZero() {
   run bash -c "./git-secrets --scan --untracked bad.file"
+  echo "$output"
   [[ "${status}" -ne 0 ]]
 }
 
 scanAndAssertZero(){
   run bash -c "./git-secrets --scan --untracked bad.file"
+  echo "$output"
   [[ "${status}" = 0 ]]
 }
 
@@ -36,11 +38,27 @@ scanAndAssertBadFile() {
   scanAndAssertNotZero
 }
 
+#sanity checks because we're only catching for non 0 exit status. git secrets can throw Invalid preceding regular expression which would make all the
+#test pass since it is throwing an error.
+@test "validate regular strings will not get caught" { scanAndAssertZeroBadFile "abcedfg"; }
+@test "validate strings with 40 characters will not get caught" { scanAndAssertZeroBadFile "1234567890abcdefghijklmnopqrstuvwxyzfake"; }
+@test "validate strings with only access key will not get caught" { scanAndAssertZeroBadFile "fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+#--------
+
 @test "validate pem file matching" {
   run bash -c "touch bad.pem"
   run bash -c "echo BEGIN RSA PRIVATE KEY >> bad.pem"
   run bash -c "echo random text stuff thats encoded >> bad.pem"
   run bash -c "echo END RSA PRIVATE KEY >> bad.pem"
+  run bash -c "./git-secrets --scan --untracked bad.pem"
+  [[ "${status}" -ne 0 ]]
+}
+
+@test "validate revocation certificate for OpenPGP gets caught" {
+  run bash -c "touch bad.pem"
+  run bash -c "echo -----BEGIN PGP PUBLIC KEY BLOCK----- >> bad.pem"
+  run bash -c "echo random text stuff thats encoded >> bad.pem"
+  run bash -c "echo -----END PGP PUBLIC KEY BLOCK----- >> bad.pem"
   run bash -c "./git-secrets --scan --untracked bad.pem"
   [[ "${status}" -ne 0 ]]
 }
@@ -110,6 +128,13 @@ scanAndAssertBadFile() {
 @test "validate Key with value" { scanAndAssertBadFile "Key=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 @test "validate key with value" { scanAndAssertBadFile "key=fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 
+@test "validate client-certificate-data kubeconfig token" { scanAndAssertBadFile "client-certificate-data:"; }
+@test "validate certificate-authority-data kubeconfig token" { scanAndAssertBadFile "certificate-authority-data:"; }
+@test "validate client-key-data kubeconfig token" { scanAndAssertBadFile "client-key-data:"; }
+
+@test "validate sha256sum fingerprint is caught" { scanAndAssertBadFile "D1:B4:17:33:34:49:87:02:C7:6A:55:33:C2:0F:D7:C0:3A:10:67:11"; }
+@test "validate md5sum fingerprint is caught" { scanAndAssertBadFile "6c:ef:26:f7:98:ad:ed:5b:cc:ff:83:13:46:c9:f6:79"; }
+
 #There is another story to make these tests pass.
 #Currently our patterns do not allow whitespaces
 #and will not fail on GNU(linux distros) but will fail on BSD(macOS)
@@ -119,13 +144,3 @@ scanAndAssertBadFile() {
 #@test "validate aws_secret_access_key value setter | =>" { scanAndAssertBadFile "aws_secret_access_key => fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 #@test "validate aws_secret_access_key value setter | anything" { scanAndAssertBadFile "aws_secret_access_key > fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 #@test "validate AWS_secret_ACCESS_KEY with space after key" { scanAndAssertBadFile "AWS_secret_ACCESS_KEY =fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
-
-@test "validate client-certificate-data kubeconfig token" { scanAndAssertBadFile "client-certificate-data:"; }
-@test "validate certificate-authority-data kubeconfig token" { scanAndAssertBadFile "certificate-authority-data:"; }
-@test "validate client-key-data kubeconfig token" { scanAndAssertBadFile "client-key-data:"; }
-
-#sanity checks because we're only catching for non 0 exit status. git secrets can throw Invalid preceding regular expression which would make all the
-#test pass since it is throwing an error.
-@test "validate regular strings will not get caught" { scanAndAssertZeroBadFile "abcedfg"; }
-@test "validate strings with 40 characters will not get caught" { scanAndAssertZeroBadFile "1234567890abcdefghijklmnopqrstuvwxyzfake"; }
-@test "validate strings with only access key will not get caught" { scanAndAssertZeroBadFile "fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
