@@ -144,3 +144,5 @@ scanAndAssertBadFile() {
 #@test "validate aws_secret_access_key value setter | =>" { scanAndAssertBadFile "aws_secret_access_key => fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 #@test "validate aws_secret_access_key value setter | anything" { scanAndAssertBadFile "aws_secret_access_key > fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
 #@test "validate AWS_secret_ACCESS_KEY with space after key" { scanAndAssertBadFile "AWS_secret_ACCESS_KEY =fak=AccessKeyfa7eA+cessKey5akeAcc/ssKeyf"; }
+#@test "validate fingerprint is caught" { scanAndAssertBadFile "E5B8 247A F8A6 19A2 8F90  FDFC 9FF2 5980 F5BA 7E4F"; }
+
