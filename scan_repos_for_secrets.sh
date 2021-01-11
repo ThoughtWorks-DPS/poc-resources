@@ -13,7 +13,8 @@ setupGitSecrets() {
 scanRecursively() {
   cd $1
   ./../git-secrets --add-provider -- cat ../git-secrets-pattern.txt >/dev/null
-  [ -f .gitallowed ] && ./../git-secrets --scan --recursive --add .gitallowed || ./../git-secrets --scan --recursive
+  ./../git-secrets --add --allowed '*/abc/*'
+  ./../git-secrets --scan --recursive
 }
 
 fetchRepository() {
