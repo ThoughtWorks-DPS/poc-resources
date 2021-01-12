@@ -74,7 +74,7 @@ makeFakeRepo() {
 
 @test "exit code contains total failed repositories" {
   makeFakeRepo fake-repo
-  run bash -c "./scan_repos_for_secrets.sh poc-resources poc-resources"
+  run bash -c "./scan_repos_for_secrets.sh fake-repo fake-repo"
 
   [[ ${status} -eq 2 ]]
 }
