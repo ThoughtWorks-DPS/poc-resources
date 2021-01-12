@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 NUM_FAILED=0
+failed_repos=()
 ROOT_PATH=$(pwd)
 GITHUB_TOKEN=$(secrethub read vapoc/platform/svc/github/access-token)
 
@@ -23,6 +24,7 @@ fetchRepository() {
 checkScanOutput() {
   if [ $1 -ne 0 ]; then
     echo "Secrets found in $2! Sound the alarm!"
+    failed_repos+=($2)
     NUM_FAILED=$((NUM_FAILED + 1))
   else
     echo "No secrets found in $2. Nothing to see here."
@@ -49,4 +51,5 @@ scanRepositories() {
 setupGitSecrets
 scanRepositories "$@"
 
+echo "Repos that failed:" ${failed_repos[*]}
 exit $NUM_FAILED

@@ -76,5 +76,6 @@ makeFakeRepo() {
   makeFakeRepo fake-repo
   run bash -c "./scan_repos_for_secrets.sh fake-repo fake-repo"
 
+  [[ "${output}" =~ "Repos that failed: fake-repo fake-repo" ]]
   [[ ${status} -eq 2 ]]
 }
