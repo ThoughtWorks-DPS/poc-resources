@@ -12,8 +12,6 @@ setupGitSecrets() {
 
 scanRecursively() {
   cd $1
-  ./../git-secrets --add-provider -- cat ../git-secrets-pattern.txt >/dev/null
-  ./../git-secrets --add --allowed '*/abc/*'
   ./../git-secrets --scan --recursive
 }
 
