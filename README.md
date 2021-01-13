@@ -7,7 +7,21 @@ Custom patterns that we use to scan repositories are found here: [git-secrets-pa
 
 #### False positives
 False positives patterns can be added to a `.gitallowed` file in the root of the repository that fails the scan.
-See more [here](https://github.com/awslabs/git-secrets#ignoring-false-positives)  
+See more [here](https://github.com/awslabs/git-secrets#ignoring-false-positives).
+
+:warning:
+In order to properly add multiple false positives in the `.gitallowed`, each regex must be or-ed within the same line. For example: 
+```sh
+(pattern1|pattern2)
+```
+
+This format will not work (due to a bug with git-secrets): 
+```sh
+pattern1
+pattern2
+```
+
+This does mean potential weirdness in regex matching and then subsequently missing secrets that should have been caught. Please use discretion when setting your `.gitallowed`.
 
 ### Daily Repository Scan
 Daily scans of a set of repositories runs at 10:00 am UTC. 
