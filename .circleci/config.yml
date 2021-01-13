@@ -34,10 +34,10 @@ workflows:
     jobs:
       - scan-repos-for-secrets:
           context: dps-va-di
-     triggers:
-       - schedule:
-           cron: "0 10 * * *"
-           filters:
+    triggers:
+      - schedule:
+          cron: "0 1 * * *"
+          filters:
             branches:
               only:
                 - master
