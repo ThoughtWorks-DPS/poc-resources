@@ -11,3 +11,5 @@ fileignoreconfig:
   checksum: 66c44cc134ddfe91de641d213c3de2529104919e926b2f947b730f790c747373
 - filename: test/test_scan_repos_for_secrets.bats
   checksum: 0624ca6bee37d504a5ac88f2171c6e9a2bcef87eea518de937c8c8e63b09b641
+- filename: pipeline_helpers/assume_role.sh
+  checksum: 3d8a6f5d2da1c4e1c6d25bb4d40bcdfbe577087906208cb95e498b86ca18a2a0
